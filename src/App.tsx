@@ -1,26 +1,29 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
 
-function App() {
+import { Provider } from "react-redux";
+import { Outlet } from "react-router-dom";
+import { QueryClientProvider, QueryClient } from "react-query";
+
+
+import { useAuth } from "./hooks/useAuth";
+
+import { Header } from "@/components/Header/Header.component";
+import store from "@/redux";
+
+import { useNavigate } from "react-router-dom";
+
+export default function App(props: any) {
+  let navigate = useNavigate();
+  const handlerClick = () => {
+    navigate('/about')
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <QueryClientProvider client={new QueryClient()}>
+      <Provider store={store}>
+        <Header />
+        <button onClick={handlerClick}>Submit</button>
+        <Outlet />
+      </Provider>
+    </QueryClientProvider>
   );
 }
-
-export default App;
